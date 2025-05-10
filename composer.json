@@ -45,7 +45,10 @@
         "psr-4": {
             "Backstage\\LaravelUsers\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
