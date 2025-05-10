@@ -2,16 +2,19 @@
 
 namespace Backstage\Laravel\Users\Commands;
 
-use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Backstage\Laravel\Users\Eloquent\Models\User;
+use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\password;
-use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
+use function Laravel\Prompts\select;
+use function Laravel\Prompts\table;
 
-class LaravelUsersCommand extends Command
+class MakeUserCommand extends Command
 {
     protected $signature = 'make:user 
         {--name= : The name of the user}
@@ -23,56 +26,102 @@ class LaravelUsersCommand extends Command
 
     public function handle(): int
     {
-        $this->info('Laravel Users Command');
+        $this->info('Creating a new user...');
+        $this->line('You can provide the user details via command line options or prompts.');
 
         $name = $this->option('name') ?: text('Name', placeholder: 'John Doe', required: true);
-        $email = $this->option('email') ?: text('Email', placeholder: 'john@doe.nl', required: true);
+        $email = $this->validateColumn($this->option('email') ?: text('Email', placeholder: 'john@doe.nl', required: true), 'email');
         $password = $this->option('password') ?: password('Password', placeholder: 'secret', required: true);
 
-        $roleClass = config('permissions.models.role', Role::class);
+        $roleClass = config('permission.models.role', Role::class);
         $userClass = config('users.eloquent.user.model', User::class);
+        $guard = config('auth.defaults.guard', 'web');
 
-        // Only fetch roles with the correct guard
-        $roles = $roleClass::where('guard_name', 'web')->pluck('name')->toArray();
+        $roles = $roleClass::where('guard_name', $guard)->pluck('name')->toArray();
         $selectedRole = null;
 
         if (empty($roles)) {
             if ($this->confirm('No roles found. Do you want to create a new role?', true)) {
                 $roleName = text('Role name', placeholder: 'admin');
-                $selectedRole = $roleClass::create([
+                $selectedRole = $roleClass::query()->create([
                     'name' => $roleName,
-                    'guard_name' => 'web',
+                    'guard_name' => $guard,
                 ]);
+
+                $selectedRole = $selectedRole->refresh();
+
                 $this->info("Role {$roleName} created.");
             } else {
                 $this->warn('No roles found. Proceeding without assigning a role.');
             }
         } else {
             $roleInput = $this->option('role') ?: select('Role', options: $roles);
+
+            if ($roleInput && $this->option('role')) {
+                $exists = $roleClass::where('name', $roleInput)->exists();
+                if (!$exists) {
+                    error("The role '{$roleInput}' does not exist.");
+                    exit;
+                }
+            }
+
+
             $selectedRole = $roleInput;
         }
 
-        /** @var \Illuminate\Database\Eloquent\Model $user */
-        $user = new $userClass;
+        /**
+         * @var User $userClass
+         */
+        $user = new $userClass();
         $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password);
         $user->save();
 
-        // Assign role after user is saved
         if ($selectedRole instanceof Role) {
-            $user->assignRole($selectedRole->name);
+            $user->assignRole($selectedRole);
         } elseif (is_string($selectedRole)) {
             $user->assignRole($selectedRole);
         }
 
-        $this->info('User created successfully!');
+        table(
+            ['User ID', 'Name', 'Email', 'Role'],
+            [
+                [
+                    $user->id,
+                    $user->name,
+                    $user->email,
+                    $selectedRole instanceof Role ? $selectedRole->name : $selectedRole,
+                ],
+            ]
+        );
+
+        info('User created successfully!');
         $this->line("User ID: {$user->id}");
         $this->line("Name: {$user->name}");
         $this->line("Email: {$user->email}");
-        $this->line('Role: '.($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
+        if ($selectedRole) {
+            $this->line("Role: " . ($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
+        }
         $this->line("Password: {$password}");
 
         return Command::SUCCESS;
+    }
+
+    protected function validateColumn($value, $column)
+    {
+        if (empty($value)) {
+            return $value;
+        }
+
+        $userClass = config('users.eloquent.user.model', User::class);
+        $exists = DB::table((new $userClass())->getTable())->where($column, $value)->exists();
+
+        if ($exists) {
+            error("The {$column} '{$value}' already exists.");
+            exit;
+        }
+
+        return $value;
     }
 }
