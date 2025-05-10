@@ -3,7 +3,6 @@
 namespace Backstage\LaravelUsers;
 
 use Backstage\LaravelUsers\Commands\LaravelUsersCommand;
-use Backstage\LaravelUsers\Domain\Events\Actions\RegisterEventListeners;
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -27,16 +26,16 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
 
     protected function getMigrations(): array
     {
-        $migrationPath = __DIR__ . '/../database/migrations/';
+        $migrationPath = __DIR__.'/../database/migrations/';
 
         $files = File::allFiles($migrationPath);
 
         $migrations = collect($files)
-            ->map(fn(SplFileInfo $splFile) => $splFile->getBasename())
+            ->map(fn (SplFileInfo $splFile) => $splFile->getBasename())
             ->toArray();
 
         return [
-            ...$migrations
+            ...$migrations,
         ];
     }
 }
