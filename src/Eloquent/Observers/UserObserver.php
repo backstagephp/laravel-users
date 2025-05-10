@@ -2,6 +2,8 @@
 
 namespace Backstage\LaravelUsers\Eloquent\Observers;
 
+use Backstage\LaravelUsers\Events\Auth\UserCreated;
+
 class UserObserver
 {
     /**
@@ -12,7 +14,7 @@ class UserObserver
      */
     public function created($user)
     {
-        event(new \Backstage\Users\Events\UserCreated($user));
+        event(new UserCreated($user));
     }
 
     /**
