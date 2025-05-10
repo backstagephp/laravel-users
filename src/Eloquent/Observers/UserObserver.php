@@ -16,15 +16,4 @@ class UserObserver
     {
         event(new UserCreated($user));
     }
-
-    /**
-     * Handle the User "updated" event.
-     *
-     * @param  \Backstage\LaravelUsers\Eloquent\Models\User  $user
-     * @return void
-     */
-    public function updated($user)
-    {
-        // Logic to handle after a user is updated
-    }
 }
