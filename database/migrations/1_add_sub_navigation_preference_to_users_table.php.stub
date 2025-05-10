@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table(config('users.eloquent.user.table', 'users'), function (Blueprint $table) {
             $table->enum('sub_navigation_preference', ['start', 'end', 'top'])
                 ->default('top')
                 ->after('remember_token')
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table(config('users.eloquent.user.table', 'users'), function (Blueprint $table) {
             $table->dropColumn('sub_navigation_preference');
         });
     }

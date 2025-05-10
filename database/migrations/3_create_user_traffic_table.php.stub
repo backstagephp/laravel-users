@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_traffic', function (Blueprint $table) {
+        Schema::create(config('users.eloquent.user_traffic.table', 'user_traffic'), function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
+            
             $table->string('method', 10);
             $table->string('path');
             $table->text('full_url');
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_traffic');
+        Schema::dropIfExists(config('users.eloquent.user_traffic.table', 'user_traffic'));
     }
 };
