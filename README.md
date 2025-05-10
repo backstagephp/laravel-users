@@ -44,7 +44,7 @@ php artisan vendor:publish --tag="laravel-users-views"
 ## Usage
 
 ```php
-$laravelUsers = new LaravelUsers\LaravelUsers();
+$laravelUsers = new Backstage\LaravelUsers();
 echo $laravelUsers->echoPhrase('Hello, LaravelUsers!');
 ```
 

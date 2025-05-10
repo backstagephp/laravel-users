@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelUsers\LaravelUsers;
+namespace Backstage\LaravelUsers;
 
-use LaravelUsers\LaravelUsers\Commands\LaravelUsersCommand;
+use Backstage\LaravelUsers\Commands\LaravelUsersCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -18,8 +18,12 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-users')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel_users_table')
+            ->hasMigrations($this->getMigrations())
             ->hasCommand(LaravelUsersCommand::class);
+    }
+
+    protected function getMigrations(): array
+    {
+        return [];
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelUsers\LaravelUsers\Tests;
+namespace Backstage\LaravelUsers\Tests;
 
+use Backstage\LaravelUsers\LaravelUsersServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use LaravelUsers\LaravelUsers\LaravelUsersServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'LaravelUsers\\LaravelUsers\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Backstage\\LaravelUsers\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
