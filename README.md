@@ -64,19 +64,28 @@ To use the custom user model provided by the package, modify your `auth.provider
 ],
 ```
 
-### 2. Sanctum Configuration (Optional)
+### 2. Sanctum Configuration (Laravel 11+)
 
-If you're using Laravel Sanctum for API authentication, make sure Sanctum's middleware is applied correctly in `app/Http/Kernel.php`:
+If you're using Laravel Sanctum for API authentication in Laravel 11, you no longer need to register Sanctum’s middleware in `app/Http/Kernel.php`. Instead, you can enable Sanctum’s stateful middleware directly via route groups.
+
+In your `routes/api.php`, apply the middleware using the new route group syntax:
 
 ```php
-'api' => [
-    \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+
+Route::middleware([
+    EnsureFrontendRequestsAreStateful::class,
+    'auth:sanctum',
     'throttle:api',
-    \Illuminate\Routing\Middleware\SubstituteBindings::class,
-],
+])->group(function () {
+    // Protected routes here
+});
 ```
 
-Also, publish Sanctum’s config if needed:
+This approach is compatible with Laravel 11's streamlined routing structure.
+
+If needed, you can still publish Sanctum’s configuration file:
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
