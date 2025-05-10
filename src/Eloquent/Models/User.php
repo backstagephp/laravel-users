@@ -2,18 +2,19 @@
 
 namespace Backstage\Laravel\Users\Eloquent\Models;
 
-use Backstage\Laravel\Users\Eloquent\Concerns\User as Concerns;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as BaseUser;
+use Backstage\Laravel\Users\Events\Auth\UserCreated;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens as HasApiTokensConcern;
 use Backstage\Laravel\Users\Eloquent\Scopes\VerifiedUser;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailConcern;
+use Backstage\Laravel\Users\Eloquent\Concerns\User as Concerns;
+use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordConcern;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as BaseUser;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
-use Laravel\Sanctum\HasApiTokens as HasApiTokensConcern;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends BaseUser implements CanResetPasswordContract, HasApiTokensContract, MustVerifyEmailContract
 {
@@ -55,5 +56,9 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
         parent::boot();
 
         static::addGlobalScope(VerifiedUser::class);
+
+        static::created(function (User $user) {
+            event(new UserCreated($user));
+        });
     }
 }
