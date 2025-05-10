@@ -2,14 +2,14 @@
 
 namespace Backstage\Laravel\Users\Commands;
 
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use Backstage\Laravel\Users\Eloquent\Models\User;
 
 use function Laravel\Prompts\password;
-use function Laravel\Prompts\text;
 use function Laravel\Prompts\select;
+use function Laravel\Prompts\text;
 
 class LaravelUsersCommand extends Command
 {
@@ -53,7 +53,7 @@ class LaravelUsersCommand extends Command
         }
 
         /** @var \Illuminate\Database\Eloquent\Model $user */
-        $user = new $userClass();
+        $user = new $userClass;
         $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password);
@@ -70,7 +70,7 @@ class LaravelUsersCommand extends Command
         $this->line("User ID: {$user->id}");
         $this->line("Name: {$user->name}");
         $this->line("Email: {$user->email}");
-        $this->line("Role: " . ($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
+        $this->line('Role: '.($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
         $this->line("Password: {$password}");
 
         return Command::SUCCESS;
