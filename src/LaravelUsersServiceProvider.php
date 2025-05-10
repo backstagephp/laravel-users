@@ -4,6 +4,7 @@ namespace Backstage\Laravel\Users;
 
 use Backstage\Laravel\Users\Commands\LaravelUsersCommand;
 use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
+use Backstage\Laravel\Users\Http\Middleware\DetectUserTraffic;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;
@@ -28,12 +29,12 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
 
     protected function getMigrations(): array
     {
-        $migrationPath = __DIR__.'/../database/migrations/';
+        $migrationPath = __DIR__ . '/../database/migrations/';
 
         $files = File::allFiles($migrationPath);
 
         $migrations = collect($files)
-            ->map(fn (SplFileInfo $splFile) => str($splFile->getBasename())->before('.')->toString())
+            ->map(fn(SplFileInfo $splFile) => str($splFile->getBasename())->before('.')->toString())
             ->toArray();
 
         return [
@@ -43,10 +44,42 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        $router = $this->app->make(Router::class);
+        $this->getEvents();
 
-        if (config('users.events.requests.web_traffic.enabled', true)) {
-            $router->pushMiddlewareToGroup('web', config('users.events.requests.web_traffic.middleware', WebTrafficDetected::class));
-        }
+        $this->app->booted(function () {
+            /**
+             * @var Illuminate\Foundation\Http\Kernel $kernel
+             */
+            $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
+
+            $middleware = config('users.events.requests.web_traffic.middleware', DetectUserTraffic::class);
+
+            if (config('users.events.requests.web_traffic.enabled', true)) {
+                $kernel->appendMiddlewareToGroup('web', $middleware);
+            }
+        });
+    }
+
+    protected function getEvents()
+    {
+        $this->app['events']->listen(
+            WebTrafficDetected::class,
+            \Backstage\Laravel\Users\Listeners\Request\RecordUserMovements::class
+        );
+
+        $this->app['events']->listen(
+            \Illuminate\Auth\Events\Login::class,
+            \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogin::class
+        );
+
+        $this->app['events']->listen(
+            \Illuminate\Auth\Events\Logout::class,
+            \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogout::class
+        );
+
+        $this->app['events']->listen(
+            'eloquent.created: ' . config('users.eloquent.user.model'),
+            \Backstage\Laravel\Users\Listeners\Auth\SendInvitationMail::class
+        );
     }
 }
