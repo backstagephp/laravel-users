@@ -2,17 +2,17 @@
 
 namespace Backstage\Laravel\Users\Commands;
 
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use Backstage\Laravel\Users\Eloquent\Models\User;
-use Illuminate\Support\Facades\DB;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\password;
-use function Laravel\Prompts\text;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\table;
+use function Laravel\Prompts\text;
 
 class MakeUserCommand extends Command
 {
@@ -59,12 +59,11 @@ class MakeUserCommand extends Command
 
             if ($roleInput && $this->option('role')) {
                 $exists = $roleClass::where('name', $roleInput)->exists();
-                if (!$exists) {
+                if (! $exists) {
                     error("The role '{$roleInput}' does not exist.");
                     exit;
                 }
             }
-
 
             $selectedRole = $roleInput;
         }
@@ -72,7 +71,7 @@ class MakeUserCommand extends Command
         /**
          * @var User $userClass
          */
-        $user = new $userClass();
+        $user = new $userClass;
         $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password);
@@ -101,7 +100,7 @@ class MakeUserCommand extends Command
         $this->line("Name: {$user->name}");
         $this->line("Email: {$user->email}");
         if ($selectedRole) {
-            $this->line("Role: " . ($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
+            $this->line('Role: '.($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
         }
         $this->line("Password: {$password}");
 
@@ -115,7 +114,7 @@ class MakeUserCommand extends Command
         }
 
         $userClass = config('users.eloquent.user.model', User::class);
-        $exists = DB::table((new $userClass())->getTable())->where($column, $value)->exists();
+        $exists = DB::table((new $userClass)->getTable())->where($column, $value)->exists();
 
         if ($exists) {
             error("The {$column} '{$value}' already exists.");
