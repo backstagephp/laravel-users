@@ -1,8 +1,8 @@
 <?php
 
-// config for LaravelUsers/LaravelUsers
-
-use Backstage\LaravelUsers\Http\Middleware\DetectUserTraffic;
+/**
+ * Laravel Users Configuration
+ */
 
 return [
     'eloquent' => [

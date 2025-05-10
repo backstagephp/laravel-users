@@ -47,7 +47,7 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
         $router = $this->app->make(Router::class);
 
         if (config('users.events.requests.web_traffic.enabled', true)) {
-            $router->pushMiddlewareToGroup('web', WebTrafficDetected::class);
+            $router->pushMiddlewareToGroup('web', config('users.events.requests.web_traffic.middleware', WebTrafficDetected::class));
         }
     }
 }
