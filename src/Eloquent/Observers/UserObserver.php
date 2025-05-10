@@ -14,6 +14,7 @@ class UserObserver
     {
         event(new \Backstage\Users\Events\UserCreated($user));
     }
+
     /**
      * Handle the User "updated" event.
      *

@@ -2,11 +2,10 @@
 
 namespace Backstage\LaravelUsers\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Backstage\LaravelUsers\Eloquent\Models\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
-use Backstage\Users\Pages\RegisterFromInvitationPage;
+use Illuminate\Notifications\Notification;
 
 class Invitation extends Notification
 {
