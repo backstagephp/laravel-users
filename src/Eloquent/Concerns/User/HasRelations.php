@@ -10,8 +10,6 @@ trait HasRelations
 {
     /**
      * Get the logins for the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function logins(): HasMany
     {
@@ -20,8 +18,6 @@ trait HasRelations
 
     /**
      * Get the traffic for the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function traffic(): HasMany
     {

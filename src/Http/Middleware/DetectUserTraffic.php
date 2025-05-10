@@ -2,10 +2,10 @@
 
 namespace Backstage\LaravelUsers\Http\Middleware;
 
+use Backstage\LaravelUsers\Events\Request\WebTrafficDetected;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Backstage\LaravelUsers\Events\Request\WebTrafficDetected;
 
 class DetectUserTraffic
 {

@@ -2,10 +2,9 @@
 
 namespace Backstage\LaravelUsers\Events\Request;
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Http\Request;
+use Illuminate\Queue\SerializesModels;
 
 class WebTrafficDetected
 {

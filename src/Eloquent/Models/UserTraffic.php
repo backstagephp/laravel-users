@@ -2,9 +2,8 @@
 
 namespace Backstage\LaravelUsers\Eloquent\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Backstage\LaravelUsers\Eloquent\Concerns\UserTraffic as Concerns;
+use Illuminate\Database\Eloquent\Model;
 
 class UserTraffic extends Model
 {

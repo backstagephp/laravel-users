@@ -18,13 +18,13 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends BaseUser implements CanResetPasswordContract, HasApiTokensContract, MustVerifyEmailContract
 {
     use CanResetPasswordConcern;
+
     // Concerns
     use Concerns\HasAttributes;
     use Concerns\HasConditionals;
     use Concerns\HasRelations;
     use Concerns\HasScopes;
     use HasApiTokensConcern;
-
     use HasFactory;
     use HasRoles;
     use MustVerifyEmailConcern;

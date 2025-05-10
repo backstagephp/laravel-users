@@ -27,7 +27,7 @@ return [
             'web_traffic' => [
                 'middleware' => \Backstage\LaravelUsers\Http\Middleware\DetectUserTraffic::class,
                 'enabled' => true,
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];
