@@ -29,5 +29,15 @@ return [
                 'enabled' => true,
             ],
         ],
+
+        'auth' => [
+            'user_created' => [
+                'invitation_notification' => \Backstage\LaravelUsers\Notifications\Invitation::class,
+                'notification_delivery_channels' => [
+                    'mail',
+                ],
+                'enabled' => true,
+            ],
+        ],
     ],
 ];
