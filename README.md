@@ -59,7 +59,7 @@ To use the custom user model provided by the package, modify your `auth.provider
 'providers' => [
     'users' => [
         'driver' => 'eloquent',
-        'model' => \Backstage\LaravelUsers\Models\User::class,
+        'model' => \Backstage\Laravel\Users\Models\User::class,
     ],
 ],
 ```
@@ -110,7 +110,7 @@ You can customize behavior by editing `config/users.php`, which may include:
 
 ## Usage
 
-After setup, your application will use `Backstage\LaravelUsers\Models\User` as the default user model.
+After setup, your application will use `Backstage\Laravel\Users\Models\User` as the default user model.
 
 The model is fully compatible with:
 
@@ -149,8 +149,8 @@ This package uses PSR-4 autoloading:
 ```json
 "autoload": {
   "psr-4": {
-    "Backstage\\LaravelUsers\\": "src/",
-    "Backstage\\LaravelUsers\\Database\\Factories\\": "database/factories/"
+    "Backstage\\Laravel\\Users\\": "src/",
+    "Backstage\\Laravel\\Users\\Database\\Factories\\": "database/factories/"
   }
 }
 ```

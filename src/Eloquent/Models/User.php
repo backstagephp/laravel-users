@@ -1,9 +1,9 @@
 <?php
 
-namespace Backstage\LaravelUsers\Eloquent\Models;
+namespace Backstage\Laravel\Users\Eloquent\Models;
 
-use Backstage\LaravelUsers\Eloquent\Concerns\User as Concerns;
-use Backstage\LaravelUsers\Eloquent\Scopes\VerifiedUser;
+use Backstage\Laravel\Users\Eloquent\Concerns\User as Concerns;
+use Backstage\Laravel\Users\Eloquent\Scopes\VerifiedUser;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailConcern;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordConcern;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Backstage\LaravelUsers;
+namespace Backstage\Laravel\Users;
 
-use Backstage\LaravelUsers\Commands\LaravelUsersCommand;
-use Backstage\LaravelUsers\Events\Request\WebTrafficDetected;
+use Backstage\Laravel\Users\Commands\LaravelUsersCommand;
+use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;

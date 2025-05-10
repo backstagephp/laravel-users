@@ -1,9 +1,9 @@
 <?php
 
-namespace Backstage\LaravelUsers\Eloquent\Concerns\User;
+namespace Backstage\Laravel\Users\Eloquent\Concerns\User;
 
-use Backstage\LaravelUsers\Eloquent\Models\UserLogin;
-use Backstage\LaravelUsers\Eloquent\Models\UserTraffic;
+use Backstage\Laravel\Users\Eloquent\Models\UserLogin;
+use Backstage\Laravel\Users\Eloquent\Models\UserTraffic;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasRelations

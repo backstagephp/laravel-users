@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Notifications;
+namespace Backstage\Laravel\Users\Notifications;
 
-use Backstage\LaravelUsers\Eloquent\Models\User;
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

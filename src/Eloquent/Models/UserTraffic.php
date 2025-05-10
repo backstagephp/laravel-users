@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Eloquent\Models;
+namespace Backstage\Laravel\Users\Eloquent\Models;
 
-use Backstage\LaravelUsers\Eloquent\Concerns\UserTraffic as Concerns;
+use Backstage\Laravel\Users\Eloquent\Concerns\UserTraffic as Concerns;
 use Illuminate\Database\Eloquent\Model;
 
 class UserTraffic extends Model

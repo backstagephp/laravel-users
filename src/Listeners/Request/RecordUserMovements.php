@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Listeners\Request;
+namespace Backstage\Laravel\Users\Listeners\Request;
 
-use Backstage\LaravelUsers\Events\Request\WebTrafficDetected;
+use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
 
 class RecordUserMovements
 {

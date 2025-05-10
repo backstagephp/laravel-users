@@ -1,6 +1,6 @@
 <?php
 
-namespace Backstage\LaravelUsers\Events\Request;
+namespace Backstage\Laravel\Users\Events\Request;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Http\Request;

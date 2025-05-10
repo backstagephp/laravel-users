@@ -1,5 +1,5 @@
 <?php
 
-namespace Backstage\LaravelUsers\Eloquent\Concerns\User;
+namespace Backstage\Laravel\Users\Eloquent\Concerns\User;
 
 trait HasConditionals {}

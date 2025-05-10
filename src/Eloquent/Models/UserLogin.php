@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Eloquent\Models;
+namespace Backstage\Laravel\Users\Eloquent\Models;
 
-use Backstage\LaravelUsers\Eloquent\Concerns\UserLogin as Concerns;
+use Backstage\Laravel\Users\Eloquent\Concerns\UserLogin as Concerns;
 use Illuminate\Database\Eloquent\Model;
 
 class UserLogin extends Model

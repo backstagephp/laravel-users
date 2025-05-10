@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Eloquent\Concerns\UserTraffic;
+namespace Backstage\Laravel\Users\Eloquent\Concerns\UserTraffic;
 
-use Backstage\LaravelUsers\Eloquent\Models\User;
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasRelations

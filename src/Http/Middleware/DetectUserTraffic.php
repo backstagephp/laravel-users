@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Http\Middleware;
+namespace Backstage\Laravel\Users\Http\Middleware;
 
-use Backstage\LaravelUsers\Events\Request\WebTrafficDetected;
+use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

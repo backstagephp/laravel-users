@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Listeners\Auth;
+namespace Backstage\Laravel\Users\Listeners\Auth;
 
-use Backstage\LaravelUsers\Events\Auth\UserCreated;
+use Backstage\Laravel\Users\Events\Auth\UserCreated;
 
 class SendInvitationMail
 {

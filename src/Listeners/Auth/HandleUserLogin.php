@@ -1,6 +1,6 @@
 <?php
 
-namespace Backstage\LaravelUsers\Listeners\Auth;
+namespace Backstage\Laravel\Users\Listeners\Auth;
 
 use Illuminate\Auth\Events\Login;
 
@@ -9,7 +9,7 @@ class HandleUserLogin
     public function handle(Login $event)
     {
         /**
-         * @var \Backstage\LaravelUsers\Eloquent\Models\User $user
+         * @var \Backstage\Laravel\Users\Eloquent\Models\User $user
          */
         $user = $event->user;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Backstage\LaravelUsers\Events\Auth;
+namespace Backstage\Laravel\Users\Events\Auth;
 
-use Backstage\LaravelUsers\Eloquent\Models\User;
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -16,7 +16,7 @@ class UserCreated
     /**
      * The user instance.
      *
-     * @var \Backstage\LaravelUsers\Eloquent\Models\User
+     * @var \Backstage\Laravel\Users\Eloquent\Models\User
      */
     public function __construct(public User $user) {}
 }

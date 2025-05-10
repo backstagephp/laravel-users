@@ -37,13 +37,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Backstage\\LaravelUsers\\": "src/",
-            "Backstage\\LaravelUsers\\Database\\Factories\\": "database/factories/"
+            "Backstage\\Laravel\\Users\\": "src/",
+            "Backstage\\Laravel\\Users\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Backstage\\LaravelUsers\\Tests\\": "tests/",
+            "Backstage\\Laravel\\Users\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         },
         "files": [
@@ -78,7 +78,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Backstage\\LaravelUsers\\LaravelUsersServiceProvider"
+                "Backstage\\Laravel\\Users\\LaravelUsersServiceProvider"
             ],
             "aliases": {}
         }
