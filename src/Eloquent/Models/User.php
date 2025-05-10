@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
 use Laravel\Sanctum\HasApiTokens as HasApiTokensConcern;
 use Spatie\Permission\Traits\HasRoles;
+use Backstage\LaravelUsers\Eloquent\Concerns\User as Concerns;
 
 class User extends BaseUser implements CanResetPasswordContract, HasApiTokensContract, MustVerifyEmailContract
 {
@@ -22,6 +23,12 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
     use HasRoles;
     use MustVerifyEmailConcern;
     use Notifiable;
+
+    // Concerns
+    use Concerns\HasAttributes;
+    use Concerns\HasConditionals;
+    use Concerns\HasRelations;
+    use Concerns\HasScopes;
 
     public function getTable()
     {
