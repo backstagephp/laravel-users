@@ -2,9 +2,9 @@
 
 namespace LaravelUsers\LaravelUsers;
 
+use LaravelUsers\LaravelUsers\Commands\LaravelUsersCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use LaravelUsers\LaravelUsers\Commands\LaravelUsersCommand;
 
 class LaravelUsersServiceProvider extends PackageServiceProvider
 {
