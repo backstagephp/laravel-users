@@ -1,47 +1,57 @@
 # Laravel Users
 
-A Laravel package for managing users, built by [Backstage](https://backstagephp.com).
-
-## Description
-
-`backstage/laravel-users` is a package designed to simplify user management in Laravel applications. It integrates seamlessly with Laravel Sanctum and Spatie Permission to provide robust authentication and authorization functionality out of the box.
+A modern user management package for Laravel, built by [Backstage](https://backstagephp.com).
 
 ---
 
-## Features
+## ✨ Introduction
 
-- User model scaffolding
-- Role and permission support using Spatie
-- API token authentication via Laravel Sanctum
-- Configurable user provider
-- Factory and seeder support for testing
+`backstage/laravel-users` is a full-featured Laravel package that provides a complete user management foundation for Laravel 10 & 11 applications. It leverages Laravel Sanctum and Spatie Permissions to deliver robust authentication, authorization, and user preference handling.
+
+This package includes support for user login tracking, traffic monitoring, preferences, factory seeding, and customizable scaffolding—all designed to scale with your application.
 
 ---
 
-## Requirements
+## 📦 Features
+
+- ✅ Custom user model with Laravel Auth integration
+- 🔐 Role and permission support via [Spatie Laravel Permission](https://spatie.be/docs/laravel-permission)
+- 🔑 API token authentication via Laravel Sanctum
+- 🔧 Configurable user system with feature toggles
+- 🧪 Built-in factory and seeder
+- 📊 Tracks login events and traffic history
+- 🧩 Modular architecture with domain-driven design (DDD) patterns
+- 🛠 Artisan commands for user management (`make`, `list`, `delete`)
+- 📨 Email-based username generation
+- 🔄 Password generation utility
+- 🧠 Customizable notification & sub-navigation preferences
+
+---
+
+## 🧰 Requirements
 
 - PHP ^8.2
-- Laravel 10 or 11
+- Laravel ^10.0 or ^11.0
 - Composer
 
 ---
 
-## Installation
+## ⚙️ Installation
 
-Install the package using Composer:
+Install via Composer:
 
 ```bash
 composer require backstage/laravel-users
 ```
 
-Publish the configuration and migration files:
+Publish configuration, migration, and seeder files:
 
 ```bash
 php artisan vendor:publish --tag="laravel-users-config"
 php artisan vendor:publish --tag="laravel-users-migrations"
 ```
 
-Run the migrations:
+Run database migrations:
 
 ```bash
 php artisan migrate
@@ -49,11 +59,11 @@ php artisan migrate
 
 ---
 
-## Configuration
+## 🛠 Configuration
 
-### 1. Update `config/auth.php`
+### 1. Set the User Provider
 
-To use the custom user model provided by the package, modify your `auth.providers.users.model` to point to the package’s model.
+Update `config/auth.php` to use the package's custom user model:
 
 ```php
 'providers' => [
@@ -64,98 +74,120 @@ To use the custom user model provided by the package, modify your `auth.provider
 ],
 ```
 
-### 2. Sanctum Installation
+### 2. Enable Sanctum API Tokens
 
-
-To enable API token authentication, publish Sanctum's configuration file:
-
-```bash
-php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
-```
-
-Finally, run the Sanctum migrations:
+If you haven't already:
 
 ```bash
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\\Sanctum\\SanctumServiceProvider"
 php artisan migrate
 ```
 
-### 3. Configure roles and permissions
+### 3. Setup Spatie Permissions
 
-This package depends on [spatie/laravel-permission](https://spatie.be/docs/laravel-permission), so ensure its config is published:
+Ensure Spatie permissions are published:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\\Permission\\PermissionServiceProvider"
+php artisan migrate
 ```
 
-You can modify `config/permission.php` and seed roles/permissions as needed.
+Edit `config/permission.php` to adjust your roles and permission settings.
 
 ---
 
-## Customization
+## 🧩 Customization
 
-After publishing the config file:
+You can modify `config/users.php` to change:
 
-```bash
-php artisan vendor:publish --tag="laravel-users-config"
-```
-
-You can customize behavior by editing `config/users.php`, which may include:
-
-- Role defaults
-- Middleware toggles
+- Default roles
+- Middleware behavior
 - Feature toggles (registration, email verification, etc.)
 - UI scaffolding paths (if applicable)
 
 ---
 
-## Usage
+## 🧑‍💻 Artisan Commands
 
-After setup, your application will use `Backstage\Laravel\Users\Models\User` as the default user model.
+The package includes a suite of CLI tools:
 
-The model is fully compatible with:
+| Command                        | Description                       |
+|-------------------------------|-----------------------------------|
+| `artisan users:make`          | Create a new user interactively   |
+| `artisan users:list`          | List users in a table format      |
+| `artisan users:delete`        | Delete a user by ID or email      |
 
-- Laravel’s built-in authentication system
-- Laravel Sanctum for API tokens
-- Spatie's permission and role traits
+Example:
 
-You may use Laravel’s Auth facade or guards as usual:
-
-```php
-use Illuminate\Support\Facades\Auth;
-
-$user = Auth::user();
+```bash
+artisan make:user --email=user@example.com --name="John Doe" --role=admin
 ```
 
 ---
 
-## Testing
+## 🧱 Architecture
 
-To run the package tests:
+### Key Classes
+
+- **UserManager**: Central config-driven service for runtime overrides
+- **Domain/Email/Actions**:
+  - `GenerateUsernameFromEmail`
+  - `ExtractDomainFromEmail`
+  - `ValidateEmail`
+- **Domain/Password/Actions**:
+  - `GeneratePassword`
+- **Eloquent/Concerns/User**:
+  - Modular traits like `HasAttributes`, `HasScopes`, `HasRelations`
+- **Models**:
+  - `User`, `UserLogin`, `UserTraffic`, `UserNotificationPreferences`
+
+### Migrations Included
+
+- Adds sub-navigation and notification preferences to users
+- Tracks user logins and traffic history
+- Supports nullable password for third-party auth
+
+---
+
+## 🧪 Testing
+
+Run PHPUnit tests via:
 
 ```bash
 vendor/bin/phpunit
 ```
 
-Ensure you have a test database configured in your `.env.testing` or `phpunit.xml` file.
+Ensure your `.env.testing` or `phpunit.xml` is configured with a test database.
 
 ---
 
-## Development
+## 🔬 Development
 
-### Autoloading
+### Local Package Development
 
-This package uses PSR-4 autoloading:
+If you're contributing or using this in a monorepo:
+
+1. Clone the package into `packages/` or your preferred folder
+2. Add this to your Laravel app's `composer.json`:
 
 ```json
-"autoload": {
-  "psr-4": {
-    "Backstage\\Laravel\\Users\\": "src/",
-    "Backstage\\Laravel\\Users\\Database\\Factories\\": "database/factories/"
+"repositories": [
+  {
+    "type": "path",
+    "url": "packages/laravel-users"
   }
-}
+],
 ```
 
-After modifying package source files, refresh the autoload files:
+3. Require the package:
+
+```bash
+composer require backstage/laravel-users:*
+```
+
+4. Refresh autoload:
 
 ```bash
 composer dump-autoload
@@ -163,14 +195,28 @@ composer dump-autoload
 
 ---
 
-## License
+## 🤝 Contributing
+
+Contributions are welcome! Please follow the PSR-12 coding standard and submit pull requests with clear descriptions.
+
+---
+
+## 📄 License
 
 This package is open-sourced software licensed under the [MIT license](LICENSE.md).
 
 ---
 
-## Author
+## 👤 Author
 
 **Manoj Hortulanus**  
-Developer at [Backstage](https://backstagephp.com)  
-<manoj@backstagephp.com>
+Lead Developer at [Backstage](https://backstagephp.com)  
+📧 <manoj@backstagephp.com>
+
+---
+
+## 🏁 Credits
+
+- [Backstage](https://backstagephp.com) for sponsoring development
+- [Spatie](https://spatie.be) for the excellent permission package
+- [Laravel](https://laravel.com) for the amazing framework
