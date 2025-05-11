@@ -3,6 +3,7 @@
 namespace Backstage\Laravel\Users\Domain\Email\Actions;
 
 use Lorisleiva\Actions\Concerns\AsAction;
+use Illuminate\Support\Facades\Log;
 
 class ValidateEmail
 {
@@ -11,14 +12,17 @@ class ValidateEmail
     public function handle(string|array $email): bool|array
     {
         if (is_array($email)) {
-            if (count($email) == 1) {
-                $email = $email[0];
-            } elseif (count($email) > 1) {
-                return collect($email)->mapWithKeys(fn ($e) => [$e => $this->validateSingleEmail($e)])->toArray();
-            }
+            return $this->validateMultipleEmails($email);
         }
 
         return $this->validateSingleEmail($email);
+    }
+
+    protected function validateMultipleEmails(array $emails): array
+    {
+        return collect($emails)
+            ->mapWithKeys(fn(string $email) => [$email => $this->validateSingleEmail($email)])
+            ->toArray();
     }
 
     protected function validateSingleEmail(string $email): bool
@@ -27,22 +31,31 @@ class ValidateEmail
             return false;
         }
 
-        if (! $this->validateEmail($email)) {
+        if (! $this->isValidFormat($email)) {
+            return false;
+        }
+
+        if (! $this->hasValidDns($email)) {
             return false;
         }
 
         return true;
     }
 
-    protected function validateEmail(string $email): bool
+    protected function isValidFormat(string $email): bool
     {
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false && $this->checkDnsrr($email);
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
-    protected function checkDnsrr(string $email): bool
+    protected function hasValidDns(string $email): bool
     {
-        $domain = substr(strrchr($email, '@'), 1);
+        $domain = $this->getDomainFromEmail($email);
 
-        return checkdnsrr($domain, 'MX');
+        return checkdnsrr($domain, "MX");
+    }
+
+    protected function getDomainFromEmail(string $email): string
+    {
+        return substr(strrchr($email, "@"), 1);
     }
 }
