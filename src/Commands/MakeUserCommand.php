@@ -106,7 +106,7 @@ class MakeUserCommand extends Command
         $this->line("Name: {$user->name}");
         $this->line("Email: {$user->email}");
         if ($selectedRole) {
-            $this->line('Role: ' . ($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
+            $this->line('Role: '.($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
         }
         $this->line("Password: {$password}");
 

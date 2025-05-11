@@ -2,21 +2,18 @@
 
 namespace Backstage\Laravel\Users\Commands;
 
-use function Termwind\ask;
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Console\Command;
-use function Laravel\Prompts\info;
-
-use function Laravel\Prompts\text;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
-use function Laravel\Prompts\error;
-use function Laravel\Prompts\table;
-use function Laravel\Prompts\search;
-use function Laravel\Prompts\select;
 use Spatie\Permission\Traits\HasRoles;
+
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
 use function Laravel\Prompts\multisearch;
-use Spatie\Permission\Traits\HasPermissions;
-use Backstage\Laravel\Users\Eloquent\Models\User;
+use function Laravel\Prompts\search;
+use function Laravel\Prompts\table;
+use function Laravel\Prompts\text;
 
 class ListUsersCommand extends Command
 {
@@ -30,25 +27,26 @@ class ListUsersCommand extends Command
 
         if ($users->isEmpty()) {
             error('No users found.');
+
             return;
         }
 
-        info('Found ' . $users->count() . ' user(s):');
+        info('Found '.$users->count().' user(s):');
 
         $this->renderTable($users);
 
-        if (!$this->option('edit')) {
+        if (! $this->option('edit')) {
             $editingUsers = $this->confirm('Do you want to edit any user?', false);
 
-            if (!$editingUsers) {
+            if (! $editingUsers) {
                 return;
             }
         }
 
         $userId = search(
             label: 'Search for the user that should receive the mail',
-            options: fn(string $value) => strlen($value) > 0
-                ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->map(fn($name, $id) => $name . ' (ID: ' . $id . ')')->toArray()
+            options: fn (string $value) => strlen($value) > 0
+                ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->map(fn ($name, $id) => $name.' (ID: '.$id.')')->toArray()
                 : []
         );
 
@@ -57,8 +55,9 @@ class ListUsersCommand extends Command
          */
         $user = User::find($userId);
 
-        if (!$user) {
+        if (! $user) {
             error('User not found!');
+
             return;
         }
 
@@ -83,19 +82,20 @@ class ListUsersCommand extends Command
             case 'roles':
                 $attachingRoles = $this->confirm('Do you want to attach roles to the user?', false);
 
-                if (!$attachingRoles) {
+                if (! $attachingRoles) {
                     $detachingRoles = $this->confirm('Do you want to detach roles from the user?', false);
 
                     $contaningRoles = $user->getRoleNames();
 
                     if ($contaningRoles->isEmpty()) {
                         error('User has no roles to detach.');
+
                         return;
                     }
 
                     $selectedRoles = multisearch(
                         label: 'Select the roles to detach from the user',
-                        options: fn(string $value) => strlen($value) > 0
+                        options: fn (string $value) => strlen($value) > 0
                             ? $contaningRoles->values()->all()
                             : [],
                         required: true,
@@ -105,6 +105,7 @@ class ListUsersCommand extends Command
 
                     if ($collectedSeletedRoles->isEmpty()) {
                         error('No roles selected.');
+
                         return;
                     }
 
@@ -125,12 +126,13 @@ class ListUsersCommand extends Command
 
                 if ($diffedRoles->isEmpty()) {
                     error('No roles available to assign to the user.');
+
                     return;
                 }
 
                 $selectedRoles = multisearch(
                     label: 'Select the roles to assign to the user',
-                    options: fn(string $value) => strlen($value) > 0
+                    options: fn (string $value) => strlen($value) > 0
                         ? $diffedRoles->values()->all()
                         : [],
                     required: true,
@@ -140,6 +142,7 @@ class ListUsersCommand extends Command
 
                 if ($collectedSeletedRoles->isEmpty()) {
                     error('No roles selected.');
+
                     return;
                 }
 
@@ -157,14 +160,14 @@ class ListUsersCommand extends Command
             'Email',
             'Verified',
             'Role(s)',
-            'Created At'
-        ], $users->map(fn(User $user) => [
+            'Created At',
+        ], $users->map(fn (User $user) => [
             $user->id,
             $user->name,
             $user->email,
             $user->hasVerifiedEmail() ? 'Yes' : 'No',
             $user->getRoleNames()->implode(', ') ?: 'No roles',
-            $user->created_at->format('Y-m-d H:i:s') . ' (' . $user->created_at->diffForHumans() . ')',
+            $user->created_at->format('Y-m-d H:i:s').' ('.$user->created_at->diffForHumans().')',
         ])->toArray());
     }
 }
