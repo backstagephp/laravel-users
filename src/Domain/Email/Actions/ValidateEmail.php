@@ -14,7 +14,7 @@ class ValidateEmail
             if (count($email) == 1) {
                 $email = $email[0];
             } elseif (count($email) > 1) {
-                return collect($email)->mapWithKeys(fn($e) => [$e => $this->validateSingleEmail($e)])->toArray();
+                return collect($email)->mapWithKeys(fn ($e) => [$e => $this->validateSingleEmail($e)])->toArray();
             }
         }
 
@@ -41,7 +41,8 @@ class ValidateEmail
 
     protected function checkDnsrr(string $email): bool
     {
-        $domain = substr(strrchr($email, "@"), 1);
-        return checkdnsrr($domain, "MX");
+        $domain = substr(strrchr($email, '@'), 1);
+
+        return checkdnsrr($domain, 'MX');
     }
 }
