@@ -2,8 +2,6 @@
 
 namespace Backstage\Laravel\Users;
 
-use Backstage\Laravel\Users\Commands\ListUsersCommand;
-use Backstage\Laravel\Users\Commands\MakeUserCommand;
 use Backstage\Laravel\Users\Events\Auth\UserCreated;
 use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
 use Backstage\Laravel\Users\Facades\UserManager;
@@ -22,8 +20,9 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasMigrations($this->getMigrations())
             ->hasCommands([
-                MakeUserCommand::class,
-                ListUsersCommand::class,
+                Commands\MakeUserCommand::class,
+                Commands\ListUsersCommand::class,
+                Commands\DeleteUser::class,
             ]);
     }
 
