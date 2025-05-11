@@ -1,6 +1,6 @@
 <?php
 
-namespace Backstage\Laravel\Users\Commands;
+namespace Backstage\Laravel\Users\Console\Commands;
 
 use Backstage\Laravel\Users\Eloquent\Models\User;
 use Illuminate\Console\Command;

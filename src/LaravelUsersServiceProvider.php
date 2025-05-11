@@ -2,6 +2,7 @@
 
 namespace Backstage\Laravel\Users;
 
+use Backstage\Laravel\Users\Console\Commands;
 use Backstage\Laravel\Users\Events\Auth\UserCreated;
 use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
 use Backstage\Laravel\Users\Facades\UserManager;
