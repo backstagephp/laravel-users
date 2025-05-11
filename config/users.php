@@ -40,4 +40,13 @@ return [
             ],
         ],
     ],
+
+    'actions' => [
+        'password' => [
+            'lowercase_chars' => 'abcdefghijklmnopqrstuvwxyz',
+            'uppercase_chars' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'numeric_chars' => '0123456789',
+            'special_chars' => '!@#$%^&*()_+-=[]{}|;:,.<>?',
+        ],
+    ],
 ];
