@@ -31,7 +31,7 @@ class ListUsersCommand extends Command
             return;
         }
 
-        info('Found '.$users->count().' user(s):');
+        info('Found ' . $users->count() . ' user(s):');
 
         $this->renderTable($users);
 
@@ -45,8 +45,8 @@ class ListUsersCommand extends Command
 
         $userId = search(
             label: 'Search for the user that should receive the mail',
-            options: fn (string $value) => strlen($value) > 0
-                ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->map(fn ($name, $id) => $name.' (ID: '.$id.')')->toArray()
+            options: fn(string $value) => strlen($value) > 0
+                ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->map(fn($name, $id) => $name . ' (ID: ' . $id . ')')->toArray()
                 : []
         );
 
@@ -95,7 +95,7 @@ class ListUsersCommand extends Command
 
                     $selectedRoles = multisearch(
                         label: 'Select the roles to detach from the user',
-                        options: fn (string $value) => strlen($value) > 0
+                        options: fn(string $value) => strlen($value) > 0
                             ? $contaningRoles->values()->all()
                             : [],
                         required: true,
@@ -132,7 +132,7 @@ class ListUsersCommand extends Command
 
                 $selectedRoles = multisearch(
                     label: 'Select the roles to assign to the user',
-                    options: fn (string $value) => strlen($value) > 0
+                    options: fn(string $value) => strlen($value) > 0
                         ? $diffedRoles->values()->all()
                         : [],
                     required: true,
@@ -160,14 +160,19 @@ class ListUsersCommand extends Command
             'Email',
             'Verified',
             'Role(s)',
+            'Requests',
+            'Most used url',
             'Created At',
-        ], $users->map(fn (User $user) => [
+        ], $users->map(fn(User $user) => [
             $user->id,
             $user->name,
             $user->email,
             $user->hasVerifiedEmail() ? 'Yes' : 'No',
             $user->getRoleNames()->implode(', ') ?: 'No roles',
-            $user->created_at->format('Y-m-d H:i:s').' ('.$user->created_at->diffForHumans().')',
+            $user->traffic()->count(),
+            $user->traffic()->get()->groupBy('full_url')->map(fn($item) => $item->count())->sortDesc()->keys()->first() ?: 'No requests',
+            $user->created_at->format('Y-m-d H:i:s') . ' (' . $user->created_at->diffForHumans() . ')',
+
         ])->toArray());
     }
 }
