@@ -115,7 +115,7 @@ The package includes a suite of CLI tools:
 
 | Command                        | Description                       |
 |-------------------------------|-----------------------------------|
-| `artisan users:make`          | Create a new user interactively   |
+| `artisan make:user`          | Create a new user interactively   |
 | `artisan users:list`          | List users in a table format      |
 | `artisan users:delete`        | Delete a user by ID or email      |
 
@@ -210,7 +210,7 @@ This package is open-sourced software licensed under the [MIT license](LICENSE.m
 ## 👤 Author
 
 **Manoj Hortulanus**  
-Lead Developer at [Backstage](https://backstagephp.com)  
+Developer at [Backstage](https://backstagephp.com)  
 📧 <manoj@backstagephp.com>
 
 ---
