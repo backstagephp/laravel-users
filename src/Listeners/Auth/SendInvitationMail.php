@@ -9,6 +9,8 @@ class SendInvitationMail
 {
     public function handle(UserCreated $event)
     {
-        $event->user->notify(new Invitation);
+        $invitationClass = config('users.events.auth.user_created.invitation_notification', Invitation::class);
+
+        $event->user->notify(new $invitationClass);
     }
 }

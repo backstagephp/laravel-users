@@ -32,6 +32,7 @@ class MakeUserCommand extends Command
         $name = $this->option('name') ?: text('Name', placeholder: 'John Doe', required: true);
         $email = $this->validateColumn($this->option('email') ?: text('Email', placeholder: 'john@doe.nl', required: true), 'email');
         $password = $this->option('password') ?: password('Password', placeholder: 'secret', required: true);
+        $verified = $this->confirm('Is the user verified?', true);
 
         $roleClass = config('permission.models.role', Role::class);
         $userClass = config('users.eloquent.user.model', User::class);
@@ -75,6 +76,11 @@ class MakeUserCommand extends Command
         $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password);
+
+        if ($verified) {
+            $user->email_verified_at = now();
+        }
+
         $user->save();
 
         if ($selectedRole instanceof Role) {
@@ -100,7 +106,7 @@ class MakeUserCommand extends Command
         $this->line("Name: {$user->name}");
         $this->line("Email: {$user->email}");
         if ($selectedRole) {
-            $this->line('Role: '.($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
+            $this->line('Role: ' . ($selectedRole instanceof Role ? $selectedRole->name : $selectedRole));
         }
         $this->line("Password: {$password}");
 

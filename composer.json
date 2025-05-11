@@ -80,7 +80,9 @@
             "providers": [
                 "Backstage\\Laravel\\Users\\LaravelUsersServiceProvider"
             ],
-            "aliases": {}
+            "aliases": {
+                "LaravelUsers": "Backstage\\Laravel\\Users\\Facades\\LaravelUsers"
+            }
         }
     },
     "minimum-stability": "dev",

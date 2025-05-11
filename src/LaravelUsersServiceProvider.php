@@ -2,14 +2,16 @@
 
 namespace Backstage\Laravel\Users;
 
-use Backstage\Laravel\Users\Commands\MakeUserCommand;
-use Backstage\Laravel\Users\Events\Auth\UserCreated;
-use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
-use Backstage\Laravel\Users\Http\Middleware\DetectUserTraffic;
+use SplFileInfo;
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;
+use Backstage\Laravel\Users\Facades\UserManager;
+use Backstage\Laravel\Users\Events\Auth\UserCreated;
+use Backstage\Laravel\Users\Commands\MakeUserCommand;
+use Backstage\Laravel\Users\Commands\ListUsersCommand;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use SplFileInfo;
+use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
+use Backstage\Laravel\Users\Http\Middleware\DetectUserTraffic;
 
 class LaravelUsersServiceProvider extends PackageServiceProvider
 {
@@ -21,22 +23,32 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
             ->hasMigrations($this->getMigrations())
             ->hasCommands([
                 MakeUserCommand::class,
+                ListUsersCommand::class
             ]);
     }
 
     protected function getMigrations(): array
     {
-        $migrationPath = __DIR__.'/../database/migrations/';
+        $migrationPath = __DIR__ . '/../database/migrations/';
 
         $files = File::allFiles($migrationPath);
 
         $migrations = collect($files)
-            ->map(fn (SplFileInfo $splFile) => str($splFile->getBasename())->before('.')->toString())
+            ->map(fn(SplFileInfo $splFile) => str($splFile->getBasename())->before('.')->toString())
             ->toArray();
 
         return [
             ...$migrations,
         ];
+    }
+
+    public function packageRegistered()
+    {
+        $this->app->singleton('user-manager', function ($app) {
+            return new UserManager($app);
+        });
+
+        $this->app->alias('user-manager', UserManager::class);
     }
 
     public function packageBooted()
