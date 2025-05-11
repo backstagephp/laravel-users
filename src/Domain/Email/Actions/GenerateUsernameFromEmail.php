@@ -23,6 +23,7 @@ class GenerateUsernameFromEmail
     protected function ensureUniqueStyle(string $prefix): string
     {
         $suffix = Str::random(4);
+
         return "{$prefix}_{$suffix}";
     }
 }

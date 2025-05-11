@@ -3,7 +3,6 @@
 namespace Backstage\Laravel\Users\Domain\Email\Actions;
 
 use Lorisleiva\Actions\Concerns\AsAction;
-use Illuminate\Support\Facades\Log;
 
 class ValidateEmail
 {
@@ -21,7 +20,7 @@ class ValidateEmail
     protected function validateMultipleEmails(array $emails): array
     {
         return collect($emails)
-            ->mapWithKeys(fn(string $email) => [$email => $this->validateSingleEmail($email)])
+            ->mapWithKeys(fn (string $email) => [$email => $this->validateSingleEmail($email)])
             ->toArray();
     }
 
@@ -51,11 +50,11 @@ class ValidateEmail
     {
         $domain = $this->getDomainFromEmail($email);
 
-        return checkdnsrr($domain, "MX");
+        return checkdnsrr($domain, 'MX');
     }
 
     protected function getDomainFromEmail(string $email): string
     {
-        return substr(strrchr($email, "@"), 1);
+        return substr(strrchr($email, '@'), 1);
     }
 }

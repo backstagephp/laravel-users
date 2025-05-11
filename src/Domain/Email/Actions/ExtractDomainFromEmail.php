@@ -15,6 +15,6 @@ class ExtractDomainFromEmail
 
     protected function extractDomain(string $email): string
     {
-        return substr(strrchr($email, "@"), 1);
+        return substr(strrchr($email, '@'), 1);
     }
 }
