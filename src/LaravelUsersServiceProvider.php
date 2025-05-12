@@ -29,12 +29,12 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
 
     protected function getMigrations(): array
     {
-        $migrationPath = __DIR__.'/../database/migrations/';
+        $migrationPath = __DIR__ . '/../database/migrations/';
 
         $files = File::allFiles($migrationPath);
 
         $migrations = collect($files)
-            ->map(fn (SplFileInfo $splFile) => str($splFile->getBasename())->before('.')->toString())
+            ->map(fn(SplFileInfo $splFile) => str($splFile->getBasename())->before('.')->toString())
             ->toArray();
 
         return [
@@ -67,6 +67,10 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
                 $kernel->appendMiddlewareToGroup('web', $middleware);
             }
         });
+
+        if (config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class)) {
+            config('users.eloquent.user.model', \Backstage\Laravel\Users\Eloquent\Models\User::class)::observe(config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class));
+        }
     }
 
     protected function getEvents()

@@ -2,4 +2,7 @@
 
 namespace Backstage\Laravel\Users\Eloquent\Concerns\User;
 
-trait HasAttributes {}
+trait HasAttributes
+{
+    // WIP
+}

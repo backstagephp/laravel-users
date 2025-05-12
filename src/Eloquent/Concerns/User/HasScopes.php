@@ -2,4 +2,7 @@
 
 namespace Backstage\Laravel\Users\Eloquent\Concerns\User;
 
-trait HasScopes {}
+trait HasScopes
+{
+    // WIP
+}

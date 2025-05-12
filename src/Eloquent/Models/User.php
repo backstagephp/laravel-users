@@ -56,10 +56,6 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
         parent::boot();
 
         static::addGlobalScope(VerifiedUser::class);
-
-        static::created(function (User $user) {
-            event(new UserCreated($user));
-        });
     }
 
     public function guardName(): string

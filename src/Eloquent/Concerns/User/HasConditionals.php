@@ -2,4 +2,7 @@
 
 namespace Backstage\Laravel\Users\Eloquent\Concerns\User;
 
-trait HasConditionals {}
+trait HasConditionals
+{
+    // WIP
+}

@@ -2,12 +2,12 @@
 
 namespace Backstage\Laravel\Users\Console\Commands;
 
-use App\Models\User;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\error;
-use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\warning;
+use function Laravel\Prompts\multiselect;
+use Backstage\Laravel\Users\Eloquent\Models\User;
 
 class DeleteUser extends Command
 {

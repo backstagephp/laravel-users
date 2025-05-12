@@ -9,6 +9,7 @@ return [
         'user' => [
             'model' => \Backstage\Laravel\Users\Eloquent\Models\User::class,
             'table' => 'users',
+            'observer' => \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class
         ],
 
         'user_login' => [
