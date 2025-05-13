@@ -14,11 +14,15 @@ use SplFileInfo;
 
 class LaravelUsersServiceProvider extends PackageServiceProvider
 {
+    public static string $name = 'backstage:laravel/users';
+
+    public static string $viewNamespace = 'backstage/laravel/users';
+
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-users')
-            ->hasConfigFile()
+            ->name(static::$name)
+            ->hasConfigFile('users')
             ->hasMigrations($this->getMigrations())
             ->hasCommands([
                 Commands\MakeUserCommand::class,
