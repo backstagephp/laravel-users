@@ -62,7 +62,7 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
         return config('auth.defaults.guard', 'web');
     }
 
-    public function getDefaultGuardName(): string
+    protected function getDefaultGuardName(): string
     {
         return $this->guardName();
     }
