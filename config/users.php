@@ -21,6 +21,11 @@ return [
             'model' => \Backstage\Laravel\Users\Eloquent\Models\UserTraffic::class,
             'table' => 'user_traffic',
         ],
+
+        'user_notification_preferences' => [
+            'model' => \Backstage\Laravel\Users\Eloquent\Models\UserNotificationPreference::class,
+            'table' => 'user_notification_preferences',
+        ],
     ],
 
     'events' => [

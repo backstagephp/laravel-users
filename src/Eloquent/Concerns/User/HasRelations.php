@@ -23,4 +23,9 @@ trait HasRelations
     {
         return $this->hasMany(config('users.eloquent.user_traffic.model', UserTraffic::class), 'user_id');
     }
+
+    public function notificationPreferences(): HasMany
+    {
+        return $this->hasMany(config('users.eloquent.user_notification_preferences.model'), 'user_id');
+    }
 }
