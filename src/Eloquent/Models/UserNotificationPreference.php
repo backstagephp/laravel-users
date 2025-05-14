@@ -2,8 +2,8 @@
 
 namespace Backstage\Laravel\Users\Eloquent\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Backstage\Laravel\Users\Enums\NotificationType;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserNotificationPreference extends Model
