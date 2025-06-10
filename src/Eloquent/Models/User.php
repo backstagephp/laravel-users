@@ -31,7 +31,7 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
     use MustVerifyEmailConcern;
     use Notifiable;
     use SoftDeletes;
-    
+
     public function getTable()
     {
         return config('users.eloquent.user.table', 'users');
