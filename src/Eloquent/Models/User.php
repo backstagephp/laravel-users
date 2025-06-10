@@ -9,6 +9,7 @@ use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordConcern;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
@@ -29,7 +30,8 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
     use HasRoles;
     use MustVerifyEmailConcern;
     use Notifiable;
-
+    use SoftDeletes;
+    
     public function getTable()
     {
         return config('users.eloquent.user.table', 'users');
