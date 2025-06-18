@@ -73,7 +73,7 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
         });
 
         if (config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class)) {
-            config('users.eloquent.user.model', \Backstage\Laravel\Users\Eloquent\Models\User::class)::observe(config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class));
+            config('auth.providers.users.model', \Backstage\Laravel\Users\Eloquent\Models\User::class)::observe(config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class));
         }
     }
 

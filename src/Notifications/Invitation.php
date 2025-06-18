@@ -35,6 +35,7 @@ class Invitation extends Notification
             ->subject(__('Welcome to Our Platform'))
             ->greeting(__('Hello :name!', ['name' => $notifiable->getAttribute('name')]))
             ->line(__('We are excited to have you on board.'))
+            ->action(__('Get Started'), url('/'))
             ->line(__('If you did not sign up, request this invitation, or expect to receive it, please ignore this email.'));
     }
 
