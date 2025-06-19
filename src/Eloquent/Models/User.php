@@ -3,7 +3,6 @@
 namespace Backstage\Laravel\Users\Eloquent\Models;
 
 use Backstage\Laravel\Users\Eloquent\Concerns\User as Concerns;
-use Backstage\Laravel\Users\Eloquent\Scopes\VerifiedUser;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailConcern;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordConcern;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;

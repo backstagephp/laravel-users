@@ -6,7 +6,7 @@ trait HasConditionals
 {
     public function userIsRegistered(): bool
     {
-        return !is_null($this->getAttribute('email_verified_at'))
-            && !is_null($this->getAttribute('password'));
+        return ! is_null($this->getAttribute('email_verified_at'))
+            && ! is_null($this->getAttribute('password'));
     }
 }
