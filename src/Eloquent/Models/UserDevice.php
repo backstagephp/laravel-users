@@ -15,6 +15,10 @@ class UserDevice extends Model
 
     protected $table = 'user_devices';
 
+    protected $appends = [
+        'device_name',
+    ];
+
     protected $fillable = [
         'user_id',
         'name',
@@ -63,6 +67,11 @@ class UserDevice extends Model
         }
 
         return $agent->device();
+    }
+
+    public function getDeviceNameAttribute(): string
+    {
+        return static::getDeviceName($this->user_agent);
     }
 
     public function user(): BelongsTo
