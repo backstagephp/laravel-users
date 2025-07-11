@@ -29,4 +29,55 @@ class UserLogin extends Model
         'region',
         'country_code',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (self $model) {
+            if ($model->type === 'login') {
+                $existingDevice = UserDevice::getSignatureBasedDevice(
+                    $model->user_id,
+                    $model->ip_address,
+                    $model->user_agent,
+                );
+
+                if ($existingDevice) {
+                    return;
+                }
+
+                $signature = UserDevice::generateFingerprint(
+                    $model->user_id,
+                    $model->ip_address,
+                    $model->user_agent
+                );
+
+                $device = $model->user->devices()->withTrashed()->where('fingerprint', $signature)->first();
+
+                if (!$device) {
+                    $model->user->devices()->create([
+                        'name' => UserDevice::getDeviceName(
+                            $model->user_agent,
+                        ),
+                        'ip_address' => $model->ip_address,
+                        'user_agent' => $model->user_agent,
+                    ]);
+
+                    return;
+                }
+
+                $device->restore();
+            }
+
+            if ($model->type === 'logout') {
+                $existingDevice = UserDevice::getSignatureBasedDevice(
+                    $model->user_id,
+                    $model->ip_address,
+                    $model->user_agent
+                );
+
+                $existingDevice?->delete();
+            }
+        });
+    }
 }

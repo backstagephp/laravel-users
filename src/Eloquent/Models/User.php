@@ -22,6 +22,7 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
     // Concerns
     use Concerns\HasAttributes;
     use Concerns\HasConditionals;
+    use Concerns\HasDevices;
     use Concerns\HasRelations;
     use Concerns\HasScopes;
     use HasApiTokensConcern;
@@ -29,7 +30,6 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
     use HasRoles;
     use MustVerifyEmailConcern;
     use Notifiable;
-    use SoftDeletes;
 
     public function getTable()
     {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasRelations
 {
-    public function user(): BelongsTo
+    public function user(): BelongsTo|User
     {
         return $this->belongsTo(config('users.eloquent.user.model', User::class), 'user_id', 'id');
     }
