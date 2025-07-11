@@ -54,7 +54,7 @@ class UserLogin extends Model
 
                 $device = $model->user->devices()->withTrashed()->where('fingerprint', $signature)->first();
 
-                if (!$device) {
+                if (! $device) {
                     $model->user->devices()->create([
                         'name' => UserDevice::getDeviceName(
                             $model->user_agent,

@@ -5,8 +5,8 @@ namespace Backstage\Laravel\Users\Eloquent\Concerns\User;
 use Backstage\Laravel\Users\Eloquent\Models\Session;
 use Backstage\Laravel\Users\Eloquent\Models\UserDevice;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 trait HasDevices
 {
@@ -59,7 +59,7 @@ trait HasDevices
 
         $device = $sessionWithMostRecentActivity->retrieveDevice();
 
-        if (!$device) {
+        if (! $device) {
             return null;
         }
 

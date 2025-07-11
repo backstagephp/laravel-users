@@ -2,10 +2,10 @@
 
 namespace Backstage\Laravel\Users\Eloquent\Models;
 
+use Backstage\Laravel\Users\Eloquent\Concerns\UserDevice as Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Backstage\Laravel\Users\Eloquent\Concerns\UserDevice as Concerns;
 use Jenssegers\Agent\Agent;
 
 class UserDevice extends Model
@@ -38,7 +38,7 @@ class UserDevice extends Model
 
     public static function generateFingerprint($user_id, $ip, $userAgent): string
     {
-        return md5($user_id . $ip . $userAgent);
+        return md5($user_id.$ip.$userAgent);
     }
 
     public static function getSignatureBasedDevice($user_id, $ip, $userAgent): ?self
@@ -54,11 +54,11 @@ class UserDevice extends Model
 
     public static function getDeviceName(string $userAgent, $headers = []): string
     {
-        $agent = new Agent();
+        $agent = new Agent;
 
         $agent->setUserAgent($userAgent);
 
-        if (!empty($headers)) {
+        if (! empty($headers)) {
             $agent->setHttpHeaders($headers);
         }
 
