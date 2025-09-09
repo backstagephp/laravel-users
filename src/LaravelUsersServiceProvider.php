@@ -4,9 +4,7 @@ namespace Backstage\Laravel\Users;
 
 use Backstage\Laravel\Users\Console\Commands;
 use Backstage\Laravel\Users\Events\Auth\UserCreated;
-use Backstage\Laravel\Users\Events\Request\WebTrafficDetected;
 use Backstage\Laravel\Users\Facades\UserManager;
-use Backstage\Laravel\Users\Http\Middleware\DetectUserTraffic;
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -64,12 +62,6 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
              * @var Illuminate\Foundation\Http\Kernel $kernel
              */
             $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
-
-            $middleware = config('users.events.requests.web_traffic.middleware', DetectUserTraffic::class);
-
-            if (config('users.events.requests.web_traffic.enabled', true)) {
-                $kernel->appendMiddlewareToGroup('web', $middleware);
-            }
         });
 
         if (config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class)) {
@@ -80,11 +72,6 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
     protected function getEvents()
     {
         $this->app['events']->listen(
-            WebTrafficDetected::class,
-            \Backstage\Laravel\Users\Listeners\Request\RecordUserMovements::class
-        );
-
-        $this->app['events']->listen(
             \Illuminate\Auth\Events\Login::class,
             \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogin::class
         );
@@ -94,9 +81,12 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
             \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogout::class
         );
 
-        $this->app['events']->listen(
-            UserCreated::class,
-            \Backstage\Laravel\Users\Listeners\Auth\SendInvitationMail::class
-        );
+
+        if(config('users.events.auth.user_created.enabled', true)){
+            $this->app['events']->listen(
+                UserCreated::class,
+                \Backstage\Laravel\Users\Listeners\Auth\SendInvitationMail::class
+            );
+        }
     }
 }

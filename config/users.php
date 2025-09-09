@@ -17,11 +17,6 @@ return [
             'table' => 'user_logins',
         ],
 
-        'user_traffic' => [
-            'model' => \Backstage\Laravel\Users\Eloquent\Models\UserTraffic::class,
-            'table' => 'user_traffic',
-        ],
-
         'user_notification_preferences' => [
             'model' => \Backstage\Laravel\Users\Eloquent\Models\UserNotificationPreference::class,
             'table' => 'user_notification_preferences',
@@ -29,15 +24,9 @@ return [
     ],
 
     'events' => [
-        'requests' => [
-            'web_traffic' => [
-                'middleware' => \Backstage\Laravel\Users\Http\Middleware\DetectUserTraffic::class,
-                'enabled' => true,
-            ],
-        ],
-
         'auth' => [
             'user_created' => [
+                // Or set Backstage\Filament\Users\Notifications\UserInvitationNotification
                 'invitation_notification' => \Backstage\Laravel\Users\Notifications\Invitation::class,
                 'notification_delivery_channels' => [
                     'mail',

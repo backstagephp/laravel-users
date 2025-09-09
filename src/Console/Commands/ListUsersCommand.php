@@ -160,8 +160,6 @@ class ListUsersCommand extends Command
             'Email',
             'Verified',
             'Role(s)',
-            'Requests',
-            'Most used url',
             'Created At',
         ], $users->map(fn (User $user) => [
             $user->id,
@@ -169,8 +167,6 @@ class ListUsersCommand extends Command
             $user->email,
             $user->hasVerifiedEmail() ? 'Yes' : 'No',
             $user->getRoleNames()->implode(', ') ?: 'No roles',
-            $user->traffic()->count(),
-            $user->traffic()->get()->groupBy('full_url')->map(fn ($item) => $item->count())->sortDesc()->keys()->first() ?: 'No requests',
             $user->created_at->format('Y-m-d H:i:s').' ('.$user->created_at->diffForHumans().')',
 
         ])->toArray());

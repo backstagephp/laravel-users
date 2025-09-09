@@ -11,11 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\Contracts\HasApiTokens as HasApiTokensContract;
-use Laravel\Sanctum\HasApiTokens as HasApiTokensConcern;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends BaseUser implements CanResetPasswordContract, HasApiTokensContract, MustVerifyEmailContract
+class User extends BaseUser implements CanResetPasswordContract, MustVerifyEmailContract
 {
     use CanResetPasswordConcern;
 
@@ -24,7 +22,6 @@ class User extends BaseUser implements CanResetPasswordContract, HasApiTokensCon
     use Concerns\HasConditionals;
     use Concerns\HasRelations;
     use Concerns\HasScopes;
-    use HasApiTokensConcern;
     use HasFactory;
     use HasRoles;
     use MustVerifyEmailConcern;
