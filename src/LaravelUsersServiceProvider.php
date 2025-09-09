@@ -81,8 +81,7 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
             \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogout::class
         );
 
-
-        if(config('users.events.auth.user_created.enabled', true)){
+        if (config('users.events.auth.user_created.enabled', true)) {
             $this->app['events']->listen(
                 UserCreated::class,
                 \Backstage\Laravel\Users\Listeners\Auth\SendInvitationMail::class
