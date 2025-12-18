@@ -31,7 +31,7 @@ class ListUsersCommand extends Command
             return;
         }
 
-        info('Found '.$users->count().' user(s):');
+        info('Found ' . $users->count() . ' user(s):');
 
         $this->renderTable($users);
 
@@ -46,7 +46,7 @@ class ListUsersCommand extends Command
         $userId = search(
             label: 'Search for the user that should receive the mail',
             options: fn (string $value) => strlen($value) > 0
-                ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->map(fn ($name, $id) => $name.' (ID: '.$id.')')->toArray()
+                ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->map(fn ($name, $id) => $name . ' (ID: ' . $id . ')')->toArray()
                 : []
         );
 
@@ -169,7 +169,7 @@ class ListUsersCommand extends Command
             $user->email,
             $user->hasVerifiedEmail() ? 'Yes' : 'No',
             $user->getRoleNames()->implode(', ') ?: 'No roles',
-            $user->created_at->format('Y-m-d H:i:s').' ('.$user->created_at->diffForHumans().')',
+            $user->created_at->format('Y-m-d H:i:s') . ' (' . $user->created_at->diffForHumans() . ')',
 
         ])->toArray());
     }
