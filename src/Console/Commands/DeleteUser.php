@@ -18,7 +18,7 @@ class DeleteUser extends Command
     public function handle()
     {
         if ($this->option('force-delete') && posix_geteuid() !== 0) {
-            error('This command must be run as root. Try: sudo php artisan '.str($this->signature)->replace(['{', '}'], '')->toString());
+            error('This command must be run as root. Try: sudo php artisan ' . str($this->signature)->replace(['{', '}'], '')->toString());
 
             return Command::FAILURE;
         }
@@ -33,7 +33,7 @@ class DeleteUser extends Command
 
         $users = multiselect(
             label: 'Select the user(s) to delete',
-            options: $userCollection->pluck('name', 'id')->map(fn ($name, $id) => $name.' (ID: '.$id.')')->toArray(),
+            options: $userCollection->pluck('name', 'id')->map(fn ($name, $id) => $name . ' (ID: ' . $id . ')')->toArray(),
             required: true,
         );
 
@@ -59,7 +59,7 @@ class DeleteUser extends Command
                 $user->delete();
             }
 
-            $this->info($this->option('force-delete') ? 'Force deleted' : 'Deleted'.' user: '.$user->name);
+            $this->info($this->option('force-delete') ? 'Force deleted' : 'Deleted' . ' user: ' . $user->name);
         }
     }
 }
