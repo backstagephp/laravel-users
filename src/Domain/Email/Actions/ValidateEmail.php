@@ -8,7 +8,7 @@ class ValidateEmail
 {
     use AsAction;
 
-    public function handle(string|array $email): bool|array
+    public function handle(string | array $email): bool | array
     {
         if (is_array($email)) {
             return $this->validateMultipleEmails($email);
