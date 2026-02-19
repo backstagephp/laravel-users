@@ -25,6 +25,11 @@ class RecordUserLogin implements ShouldQueue
     public function handle(): void
     {
         $userModel = config('users.eloquent.user.model');
+
+        if (! $userModel || ! class_exists($userModel)) {
+            return;
+        }
+
         $user = $userModel::find($this->userId);
 
         if (! $user) {
