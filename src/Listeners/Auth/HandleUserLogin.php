@@ -2,6 +2,7 @@
 
 namespace Backstage\Laravel\Users\Listeners\Auth;
 
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Backstage\Laravel\Users\Jobs\RecordUserLogin;
 use Illuminate\Auth\Events\Login;
 
@@ -9,7 +10,7 @@ class HandleUserLogin
 {
     public function handle(Login $event): void
     {
-        /** @var \Backstage\Laravel\Users\Eloquent\Models\User $user */
+        /** @var User $user */
         $user = $event->user;
 
         $inputs = request()->except('_method', '_token', 'password');

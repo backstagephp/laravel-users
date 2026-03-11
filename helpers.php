@@ -1,5 +1,8 @@
 <?php
 
+use Backstage\Laravel\Users\Domain\Email\Actions\ValidateEmail;
+use Backstage\Laravel\Users\Domain\Password\Actions\GeneratePassword;
+
 if (! function_exists('geo')) {
     function geo($attribute = '')
     {
@@ -18,13 +21,13 @@ if (! function_exists('geo')) {
 if (! function_exists('generate_password')) {
     function generate_password(...$args)
     {
-        return \Backstage\Laravel\Users\Domain\Password\Actions\GeneratePassword::run(...$args);
+        return GeneratePassword::run(...$args);
     }
 }
 
 if (! function_exists('validate_email')) {
     function validate_email(...$args)
     {
-        return \Backstage\Laravel\Users\Domain\Email\Actions\ValidateEmail::run(...$args);
+        return ValidateEmail::run(...$args);
     }
 }

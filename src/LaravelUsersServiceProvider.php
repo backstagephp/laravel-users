@@ -3,8 +3,16 @@
 namespace Backstage\Laravel\Users;
 
 use Backstage\Laravel\Users\Console\Commands;
+use Backstage\Laravel\Users\Eloquent\Models\User;
+use Backstage\Laravel\Users\Eloquent\Observers\UserObserver;
 use Backstage\Laravel\Users\Events\Auth\UserCreated;
 use Backstage\Laravel\Users\Facades\UserManager;
+use Backstage\Laravel\Users\Listeners\Auth\HandleUserLogin;
+use Backstage\Laravel\Users\Listeners\Auth\HandleUserLogout;
+use Backstage\Laravel\Users\Listeners\Auth\SendInvitationMail;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -61,30 +69,30 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
             /**
              * @var Illuminate\Foundation\Http\Kernel $kernel
              */
-            $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
+            $kernel = $this->app->make(Kernel::class);
         });
 
-        if (config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class)) {
-            config('auth.providers.users.model', \Backstage\Laravel\Users\Eloquent\Models\User::class)::observe(config('users.eloquent.user.observer', \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class));
+        if (config('users.eloquent.user.observer', UserObserver::class)) {
+            config('auth.providers.users.model', User::class)::observe(config('users.eloquent.user.observer', UserObserver::class));
         }
     }
 
     protected function getEvents()
     {
         $this->app['events']->listen(
-            \Illuminate\Auth\Events\Login::class,
-            \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogin::class
+            Login::class,
+            HandleUserLogin::class
         );
 
         $this->app['events']->listen(
-            \Illuminate\Auth\Events\Logout::class,
-            \Backstage\Laravel\Users\Listeners\Auth\HandleUserLogout::class
+            Logout::class,
+            HandleUserLogout::class
         );
 
         if (config('users.events.auth.user_created.enabled', true)) {
             $this->app['events']->listen(
                 UserCreated::class,
-                \Backstage\Laravel\Users\Listeners\Auth\SendInvitationMail::class
+                SendInvitationMail::class
             );
         }
     }

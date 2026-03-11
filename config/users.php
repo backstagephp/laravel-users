@@ -1,5 +1,11 @@
 <?php
 
+use Backstage\Laravel\Users\Eloquent\Models\User;
+use Backstage\Laravel\Users\Eloquent\Models\UserLogin;
+use Backstage\Laravel\Users\Eloquent\Models\UserNotificationPreference;
+use Backstage\Laravel\Users\Eloquent\Observers\UserObserver;
+use Backstage\Laravel\Users\Notifications\Invitation;
+
 /**
  * Laravel Users Configuration
  */
@@ -7,18 +13,18 @@
 return [
     'eloquent' => [
         'user' => [
-            'model' => \Backstage\Laravel\Users\Eloquent\Models\User::class,
+            'model' => User::class,
             'table' => 'users',
-            'observer' => \Backstage\Laravel\Users\Eloquent\Observers\UserObserver::class,
+            'observer' => UserObserver::class,
         ],
 
         'user_login' => [
-            'model' => \Backstage\Laravel\Users\Eloquent\Models\UserLogin::class,
+            'model' => UserLogin::class,
             'table' => 'user_logins',
         ],
 
         'user_notification_preferences' => [
-            'model' => \Backstage\Laravel\Users\Eloquent\Models\UserNotificationPreference::class,
+            'model' => UserNotificationPreference::class,
             'table' => 'user_notification_preferences',
         ],
     ],
@@ -27,7 +33,7 @@ return [
         'auth' => [
             'user_created' => [
                 // Or set Backstage\Filament\Users\Notifications\UserInvitationNotification
-                'invitation_notification' => \Backstage\Laravel\Users\Notifications\Invitation::class,
+                'invitation_notification' => Invitation::class,
                 'notification_delivery_channels' => [
                     'mail',
                 ],
