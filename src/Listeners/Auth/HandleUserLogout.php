@@ -2,6 +2,7 @@
 
 namespace Backstage\Laravel\Users\Listeners\Auth;
 
+use Backstage\Laravel\Users\Eloquent\Models\User;
 use Backstage\Laravel\Users\Jobs\RecordUserLogin;
 use Illuminate\Auth\Events\Logout;
 
@@ -9,7 +10,7 @@ class HandleUserLogout
 {
     public function handle(Logout $event): void
     {
-        /** @var \Backstage\Laravel\Users\Eloquent\Models\User|null $user */
+        /** @var User|null $user */
         $user = $event->user;
 
         if (! $user) {
