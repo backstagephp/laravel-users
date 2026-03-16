@@ -24,7 +24,7 @@ class RecordUserLogin implements ShouldQueue
 
     public function handle(): void
     {
-        if(!$this->userId) {
+        if (! $this->userId) {
             return;
         }
 
