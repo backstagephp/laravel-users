@@ -13,8 +13,8 @@ class RecordUserLogin implements ShouldQueue
      * @param  array<string, mixed>|null  $inputs
      */
     public function __construct(
-        public int $userId,
-        public string $type,
+        public ?int $userId,
+        public ?string $type,
         public ?string $url,
         public ?string $referrer,
         public ?array $inputs,
@@ -24,6 +24,10 @@ class RecordUserLogin implements ShouldQueue
 
     public function handle(): void
     {
+        if(!$this->userId) {
+            return;
+        }
+
         $userModel = config('users.eloquent.user.model');
 
         if (! $userModel || ! class_exists($userModel)) {
