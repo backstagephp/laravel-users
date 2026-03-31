@@ -16,7 +16,7 @@ class UserCreated
     /**
      * The user instance.
      *
-     * @var \Backstage\Laravel\Users\Eloquent\Models\User
+     * @var User
      */
     public function __construct(public User $user) {}
 }
