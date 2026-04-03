@@ -19,5 +19,5 @@ class UserCreated
      *
      * @var User
      */
-    public function __construct(public Model|User $user) {}
+    public function __construct(public Model | User $user) {}
 }
