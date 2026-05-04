@@ -50,4 +50,22 @@ return [
             'special_chars' => '!@#$%^&*()_+-=[]{}|;:,.<>?',
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email change
+    |--------------------------------------------------------------------------
+    |
+    | This package only ships the building blocks (actions, events,
+    | notifications). Consumers must wire their own routes, controllers and
+    | a listener for `EmailChangeInitiated` that builds the confirmation URL
+    | and dispatches the notification. See the README for a minimal example.
+    |
+    */
+    'email_change' => [
+        'enabled' => true,
+        'token_lifetime_minutes' => 60 * 24,
+        'notify_old_address' => true,
+        'cooldown_minutes' => 5,
+    ],
 ];

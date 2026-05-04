@@ -201,6 +201,96 @@ Contributions are welcome! Please follow the PSR-12 coding standard and submit p
 
 ---
 
+## ✉️ Email change with confirmation
+
+This package ships the building blocks for a confirmed email-change flow:
+actions, events and notifications. **Routing, URL generation and the
+listener that sends the mail are intentionally left to your application** —
+this keeps the package framework-agnostic and lets you decide where the
+confirmation link points.
+
+### What's included
+
+- Migration: `pending_email`, `pending_email_token`, `pending_email_token_expires_at`, `pending_email_requested_at`.
+- Actions:
+    - `Backstage\Laravel\Users\Domain\Email\Actions\InitiateEmailChange`
+    - `Backstage\Laravel\Users\Domain\Email\Actions\ConfirmEmailChange`
+    - `Backstage\Laravel\Users\Domain\Email\Actions\CancelEmailChange`
+- Events: `EmailChangeInitiated`, `EmailChangeConfirmed`, `EmailChangeCancelled` (under `Backstage\Laravel\Users\Events\Email\`).
+- Notifications (URL is supplied via constructor): `Backstage\Laravel\Users\Notifications\Email\ConfirmEmailChange`, `Backstage\Laravel\Users\Notifications\Email\EmailChangeRequested`.
+- Config block `users.email_change.*` for token lifetime, cooldown and old-address notification.
+
+### Minimal setup in your application
+
+```php
+// app/Providers/AppServiceProvider.php
+use Backstage\Laravel\Users\Events\Email\EmailChangeInitiated;
+use Backstage\Laravel\Users\Notifications\Email\ConfirmEmailChange;
+use Backstage\Laravel\Users\Notifications\Email\EmailChangeRequested;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+
+public function boot(): void
+{
+    Event::listen(function (EmailChangeInitiated $event) {
+        $confirmUrl = URL::temporarySignedRoute(
+            'email.confirm',
+            now()->addMinutes($event->expiresInMinutes),
+            ['user' => $event->user->id, 'token' => $event->rawToken],
+        );
+
+        Notification::route('mail', $event->user->pending_email)
+            ->notify(new ConfirmEmailChange($event->newEmail, $confirmUrl));
+
+        if (config('users.email_change.notify_old_address')) {
+            $cancelUrl = URL::temporarySignedRoute(
+                'email.cancel',
+                now()->addMinutes($event->expiresInMinutes),
+                ['user' => $event->user->id, 'token' => $event->rawToken],
+            );
+
+            $event->user->notify(new EmailChangeRequested($event->newEmail, $cancelUrl));
+        }
+    });
+}
+```
+
+```php
+// routes/web.php
+use Backstage\Laravel\Users\Domain\Email\Actions\CancelEmailChange;
+use Backstage\Laravel\Users\Domain\Email\Actions\ConfirmEmailChange;
+use Backstage\Laravel\Users\Eloquent\Models\User;
+
+Route::middleware('signed')->group(function () {
+    Route::get('/email/confirm/{user}/{token}', function (User $user, string $token) {
+        ConfirmEmailChange::run($user, $token);
+
+        return redirect('/');
+    })->name('email.confirm');
+
+    Route::get('/email/cancel/{user}/{token}', function (User $user, string $token) {
+        CancelEmailChange::run($user, $token);
+
+        return redirect('/');
+    })->name('email.cancel');
+});
+```
+
+```php
+// trigger from your controller / Filament page / Livewire component
+use Backstage\Laravel\Users\Domain\Email\Actions\InitiateEmailChange;
+
+InitiateEmailChange::run($user, $request->input('email'));
+```
+
+The `?string $source` parameter on `InitiateEmailChange` is opaque to this
+package; pass any identifier you need on the receiving end (panel ID, tenant
+slug, channel, …). Listeners can branch on `$event->source` to decide which
+URL to build.
+
+---
+
 ## 📄 License
 
 This package is open-sourced software licensed under the [MIT license](LICENSE.md).

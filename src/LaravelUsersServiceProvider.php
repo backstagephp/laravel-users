@@ -34,12 +34,13 @@ class LaravelUsersServiceProvider extends PackageServiceProvider
                 Commands\MakeUserCommand::class,
                 Commands\ListUsersCommand::class,
                 Commands\DeleteUser::class,
+                Commands\UpgradeCommand::class,
             ]);
     }
 
     protected function getMigrations(): array
     {
-        $migrationPath = __DIR__ . '/../database/migrations/';
+        $migrationPath = __DIR__.'/../database/migrations/';
 
         $files = File::allFiles($migrationPath);
 

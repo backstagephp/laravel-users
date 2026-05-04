@@ -45,6 +45,8 @@ class User extends BaseUser implements CanResetPasswordContract, MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'pending_email_token_expires_at' => 'datetime',
+            'pending_email_requested_at' => 'datetime',
         ];
     }
 

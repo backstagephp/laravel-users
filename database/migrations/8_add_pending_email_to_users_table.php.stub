@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table(config('users.eloquent.user.table', 'users'), function (Blueprint $table) {
+            $table->string('pending_email')->nullable()->after('email');
+            $table->string('pending_email_token')->nullable()->after('pending_email');
+            $table->timestamp('pending_email_token_expires_at')->nullable()->after('pending_email_token');
+            $table->timestamp('pending_email_requested_at')->nullable()->after('pending_email_token_expires_at');
+
+            $table->index('pending_email_token');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table(config('users.eloquent.user.table', 'users'), function (Blueprint $table) {
+            $table->dropIndex([config('users.eloquent.user.table', 'users').'_pending_email_token_index']);
+
+            $table->dropColumn([
+                'pending_email',
+                'pending_email_token',
+                'pending_email_token_expires_at',
+                'pending_email_requested_at',
+            ]);
+        });
+    }
+};
